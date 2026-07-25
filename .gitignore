@@ -1,0 +1,11 @@
+# CMake build directories
+/build/
+/build-*/
+
+# Editor and tooling output
+/.cache/
+/compile_commands.json
+
+# Developer specific files
+/CMakeUserPresets.json
+todo
