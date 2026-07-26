@@ -3,6 +3,8 @@
 #include <dominus/source/source_manager.hpp>
 #include <dominus/source/source_span.hpp>
 
+#include <stdexcept>
+
 TEST_CASE("a source manager owns an added source")
 {
     dominus::SourceManager sources;
@@ -33,4 +35,15 @@ TEST_CASE("a source manager retrieves empty text for an empty span")
     const dominus::SourceSpan span{source_id, 9, 9};
 
     CHECK(sources.Text(span).empty());
+}
+
+TEST_CASE("a source manager rejects a span whose end exceeds the source size")
+{
+    dominus::SourceManager sources;
+
+    const dominus::SourceId source_id = sources.AddSource("expression.dom", "1 + 2 * 3");
+
+    const dominus::SourceSpan span{source_id, 4, 1000};
+
+    CHECK_THROWS_AS(sources.Text(span), std::out_of_range);
 }

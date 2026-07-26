@@ -1,5 +1,6 @@
 #include <dominus/source/source_manager.hpp>
 
+#include <stdexcept>
 #include <utility>
 
 namespace dominus
@@ -28,6 +29,12 @@ std::string_view SourceManager::Text(SourceId source_id) const
 std::string_view SourceManager::Text(SourceSpan source_span) const
 {
     const std::string_view source_text = Text(source_span.Source());
+
+    // Check span is within the source text bounds
+    if (source_span.End() > source_text.size())
+    {
+        throw std::out_of_range("SourceSpan end exceeds source text size");
+    }
 
     return source_text.substr(source_span.Begin(), source_span.End() - source_span.Begin());
 }
