@@ -48,7 +48,7 @@ TEST_CASE("a source manager rejects a span whose end exceeds the source size")
     CHECK_THROWS_AS(sources.Text(span), std::out_of_range);
 }
 
-TEST_CASE("a source retrieves UTF-8 text correctly")
+TEST_CASE("source spans use UTF-8 byte offsets")
 {
     dominus::SourceManager sources;
 
