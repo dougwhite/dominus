@@ -72,6 +72,7 @@ if(BUILD_TESTING)
     add_executable(dominus_tests
         tests/test_harness.cpp
         tests/source/source_manager_tests.cpp
+        tests/source/source_span_tests.cpp
     )
 
     target_link_libraries(dominus_tests
