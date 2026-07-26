@@ -18,6 +18,12 @@ include(DominusSanitizers)
 
 add_library(dominus_core STATIC
     src/dominus_core.cpp
+    src/source/source_manager.cpp
+)
+
+target_include_directories(dominus_core
+    PUBLIC
+        "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )
 
 target_compile_features(dominus_core
@@ -60,8 +66,11 @@ if(BUILD_TESTING)
 
     FetchContent_MakeAvailable(doctest)
 
+    include("${DOCTEST_CMAKE_HELPER}")
+    
     add_executable(dominus_tests
         tests/test_harness.cpp
+        tests/source/source_manager_tests.cpp
     )
 
     target_link_libraries(dominus_tests
@@ -77,8 +86,5 @@ if(BUILD_TESTING)
     dominus_enable_warnings(dominus_tests)
     dominus_enable_sanitizers(dominus_tests)
 
-    add_test(
-        NAME dominus_tests
-        COMMAND dominus_tests
-    )
+    doctest_discover_tests(dominus_tests)
 endif()
