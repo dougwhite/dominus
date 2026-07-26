@@ -25,4 +25,11 @@ std::string_view SourceManager::Text(SourceId source_id) const
     return _sources.at(source_id._index).text;
 }
 
+std::string_view SourceManager::Text(SourceSpan source_span) const
+{
+    const std::string_view source_text = Text(source_span.Source());
+
+    return source_text.substr(source_span.Begin(), source_span.End() - source_span.Begin());
+}
+
 } // namespace dominus

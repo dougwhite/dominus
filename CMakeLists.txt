@@ -19,6 +19,7 @@ include(DominusSanitizers)
 add_library(dominus_core STATIC
     src/dominus_core.cpp
     src/source/source_manager.cpp
+    src/source/source_span.cpp
 )
 
 target_include_directories(dominus_core
