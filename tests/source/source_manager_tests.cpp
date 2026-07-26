@@ -47,3 +47,14 @@ TEST_CASE("a source manager rejects a span whose end exceeds the source size")
 
     CHECK_THROWS_AS(sources.Text(span), std::out_of_range);
 }
+
+TEST_CASE("a source retrieves UTF-8 text correctly")
+{
+    dominus::SourceManager sources;
+
+    const dominus::SourceId source_id = sources.AddSource("expression.dom", "aéz");
+
+    const dominus::SourceSpan span{source_id, 1, 3};
+
+    CHECK(sources.Text(span) == "é");
+}
