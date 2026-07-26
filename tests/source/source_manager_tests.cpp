@@ -23,3 +23,14 @@ TEST_CASE("a source manager retrieves the exact text selected by a source span")
 
     CHECK(sources.Text(span) == "2 * 3");
 }
+
+TEST_CASE("a source manager retrieves empty text for an empty span")
+{
+    dominus::SourceManager sources;
+
+    const dominus::SourceId source_id = sources.AddSource("expression.dom", "1 + 2 * 3");
+
+    const dominus::SourceSpan span{source_id, 9, 9};
+
+    CHECK(sources.Text(span).empty());
+}
