@@ -67,7 +67,7 @@ if(BUILD_TESTING)
     FetchContent_MakeAvailable(doctest)
 
     include("${DOCTEST_CMAKE_HELPER}")
-    
+
     add_executable(dominus_tests
         tests/test_harness.cpp
         tests/source/source_manager_tests.cpp

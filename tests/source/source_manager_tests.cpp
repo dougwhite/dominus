@@ -2,7 +2,7 @@
 
 #include <dominus/source/source_manager.hpp>
 
-TEST_CASE("a source manager owns an added source") 
+TEST_CASE("a source manager owns an added source")
 {
     dominus::SourceManager sources;
 
