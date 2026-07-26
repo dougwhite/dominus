@@ -15,4 +15,4 @@ class SourceId
     std::size_t _index;
 };
 
-}
+} // namespace dominus
