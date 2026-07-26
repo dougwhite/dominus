@@ -9,3 +9,4 @@
 # Developer specific files
 /CMakeUserPresets.json
 todo
+.vscode
