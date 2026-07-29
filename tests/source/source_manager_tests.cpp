@@ -65,6 +65,7 @@ TEST_CASE("a source manager locates a byte offset by line and byte column")
     dominus::SourceManager sources;
 
     const dominus::SourceId source_id = sources.AddSource("example.dom", "one\ntwo\nthree");
+    //                                                                           ^
 
     const dominus::SourceLocation location = sources.Locate(source_id, 6);
 
@@ -79,6 +80,73 @@ TEST_CASE("a source manager rejects location requests exceeding the source size"
     dominus::SourceManager sources;
 
     const dominus::SourceId source_id = sources.AddSource("example.dom", "one\ntwo\nthree");
+    //                                                                                         ^ Illegal offset
 
     CHECK_THROWS_AS(sources.Locate(source_id, 1000), std::out_of_range);
+}
+
+TEST_CASE("the beginning of a source is line one byte column one")
+{
+    dominus::SourceManager sources;
+
+    const dominus::SourceId source_id = sources.AddSource("example.dom", "one\ntwo");
+    //                                                                    ^
+
+    const dominus::SourceLocation location = sources.Locate(source_id, 0);
+
+    CHECK(location.Line() == 1);
+    CHECK(location.ByteColumn() == 1);
+}
+
+TEST_CASE("EOF after a trailing newline is on a new empty line")
+{
+    dominus::SourceManager sources;
+
+    const dominus::SourceId source_id = sources.AddSource("example.dom", "one\n");
+    //                                                                         ^
+
+    const dominus::SourceLocation location = sources.Locate(source_id, 4);
+
+    CHECK(location.ByteOffset() == 4);
+    CHECK(location.Line() == 2);
+    CHECK(location.ByteColumn() == 1);
+}
+
+TEST_CASE("EOF without a trailing newline follows the final byte")
+{
+    dominus::SourceManager sources;
+
+    const dominus::SourceId source_id = sources.AddSource("example.dom", "one");
+    //                                                                       ^
+
+    const dominus::SourceLocation location = sources.Locate(source_id, 3);
+
+    CHECK(location.Line() == 1);
+    CHECK(location.ByteColumn() == 4);
+}
+
+TEST_CASE("an empty source begins and ends at line one byte column one")
+{
+    dominus::SourceManager sources;
+
+    const dominus::SourceId source_id = sources.AddSource("empty.dom", "");
+    //                                                                  ^
+
+    const dominus::SourceLocation location = sources.Locate(source_id, 0);
+
+    CHECK(location.Line() == 1);
+    CHECK(location.ByteColumn() == 1);
+}
+
+TEST_CASE("source locations use UTF-8 byte columns")
+{
+    dominus::SourceManager sources;
+
+    const dominus::SourceId source_id = sources.AddSource("example.dom", "aéz");
+    //                                                                      ^ lands here because é is 2 bytes
+
+    const dominus::SourceLocation location = sources.Locate(source_id, 3);
+
+    CHECK(location.Line() == 1);
+    CHECK(location.ByteColumn() == 4);
 }
