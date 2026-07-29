@@ -150,3 +150,29 @@ TEST_CASE("source locations use UTF-8 byte columns")
     CHECK(location.Line() == 1);
     CHECK(location.ByteColumn() == 4);
 }
+
+TEST_CASE("a source manager treats CRLF as one line ending")
+{
+    dominus::SourceManager sources;
+
+    const dominus::SourceId source_id = sources.AddSource("example.dom", "one\r\ntwo");
+    //                                                                           ^
+
+    const dominus::SourceLocation location = sources.Locate(source_id, 5);
+
+    CHECK(location.Line() == 2);
+    CHECK(location.ByteColumn() == 1);
+}
+
+TEST_CASE("a source manager treats a lone CR as a line ending")
+{
+    dominus::SourceManager sources;
+
+    const dominus::SourceId source_id = sources.AddSource("example.dom", "one\rtwo");
+    //                                                                         ^
+
+    const dominus::SourceLocation location = sources.Locate(source_id, 4);
+
+    CHECK(location.Line() == 2);
+    CHECK(location.ByteColumn() == 1);
+}

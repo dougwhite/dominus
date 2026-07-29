@@ -13,11 +13,24 @@ SourceId SourceManager::AddSource(std::string name, std::string text)
     // Scan the source once to calculate line starts
     std::vector<std::size_t> line_starts{0};
 
-    for (std::size_t offset = 0; offset < text.size(); ++offset)
+    for (std::size_t offset = 0; offset < text.size();)
     {
-        if (text[offset] == '\n')
+        // CRLF is one two-byte line ending
+        if (text[offset] == '\r' && offset + 1 < text.size() && text[offset + 1] == '\n')
+        {
+            line_starts.push_back(offset + 2);
+            offset += 2;
+        }
+        // Lone CR and LF are one-byte line endings
+        else if (text[offset] == '\r' || text[offset] == '\n')
         {
             line_starts.push_back(offset + 1);
+            ++offset;
+        }
+        // Other characters
+        else
+        {
+            ++offset;
         }
     }
 
