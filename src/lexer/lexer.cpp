@@ -1,7 +1,5 @@
 #include <dominus/lexer/lexer.hpp>
 
-#include <stdexcept>
-
 // Helper character classification functions
 namespace
 {

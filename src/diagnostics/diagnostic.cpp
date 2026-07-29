@@ -8,11 +8,13 @@ Diagnostic::Diagnostic(DiagnosticCode code, SourceSpan span)
 {
 }
 
-DiagnosticCode Diagnostic::Code() const {
+DiagnosticCode Diagnostic::Code() const
+{
     return _code;
 }
 
-SourceSpan Diagnostic::Span() const {
+SourceSpan Diagnostic::Span() const
+{
     return _span;
 }
 

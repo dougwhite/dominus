@@ -297,8 +297,7 @@ TEST_CASE("an unexpected character produces an invalid token and diagnostic")
     dominus::SourceManager sources;
     dominus::DiagnosticBag diagnostics;
 
-    const dominus::SourceId source_id =
-        sources.AddSource("expression.dom", "@");
+    const dominus::SourceId source_id = sources.AddSource("expression.dom", "@");
 
     dominus::Lexer lexer{sources, source_id, diagnostics};
 
@@ -314,10 +313,7 @@ TEST_CASE("an unexpected character produces an invalid token and diagnostic")
 
     const dominus::Diagnostic &diagnostic = diagnostics.At(0);
 
-    CHECK(
-        diagnostic.Code()
-        == dominus::DiagnosticCode::UnexpectedCharacter
-    );
+    CHECK(diagnostic.Code() == dominus::DiagnosticCode::UnexpectedCharacter);
 
     CHECK(diagnostic.Span().Begin() == 0);
     CHECK(diagnostic.Span().End() == 1);

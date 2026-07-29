@@ -19,7 +19,7 @@ class DiagnosticBag
 
         bool Empty() const;
         std::size_t Size() const;
-        const Diagnostic &At(std::size_t offset) const;
+        const Diagnostic &At(std::size_t index) const;
 
     private:
         std::vector<Diagnostic> _diagnostics;
