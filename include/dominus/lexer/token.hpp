@@ -7,7 +7,9 @@ namespace dominus
 
 enum class TokenKind
 {
-    EndOfFile
+    EndOfFile,
+    IntegerLiteral,
+    Plus
 };
 
 class Token
