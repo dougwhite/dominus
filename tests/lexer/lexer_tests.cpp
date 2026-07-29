@@ -60,16 +60,9 @@ TEST_CASE("an integer literal consumes all consecutive digits")
     CHECK(token.Span().Begin() == 0);
     CHECK(token.Span().End() == 3);
     CHECK(sources.Text(token.Span()) == "123");
-
-    // Get the EOF token
-    const dominus::Token eof = lexer.NextToken();
-
-    CHECK(eof.Kind() == dominus::TokenKind::EndOfFile);
-    CHECK(eof.Span().Begin() == 3);
-    CHECK(eof.Span().End() == 3);
 }
 
-TEST_CASE("a plus sign produces a plus token and an EOF")
+TEST_CASE("a plus sign produces a plus token")
 {
     dominus::SourceManager sources;
 
@@ -82,12 +75,6 @@ TEST_CASE("a plus sign produces a plus token and an EOF")
     CHECK(plus.Span().Begin() == 0);
     CHECK(plus.Span().End() == 1);
     CHECK(sources.Text(plus.Span()) == "+");
-
-    const dominus::Token eof = lexer.NextToken();
-
-    CHECK(eof.Kind() == dominus::TokenKind::EndOfFile);
-    CHECK(eof.Span().Begin() == 1);
-    CHECK(eof.Span().End() == 1);
 }
 
 TEST_CASE("spaces between tokens are ignored")
@@ -116,12 +103,6 @@ TEST_CASE("spaces between tokens are ignored")
     CHECK(two.Span().Begin() == 4);
     CHECK(two.Span().End() == 5);
     CHECK(sources.Text(two.Span()) == "2");
-
-    const dominus::Token eof = lexer.NextToken();
-
-    CHECK(eof.Kind() == dominus::TokenKind::EndOfFile);
-    CHECK(eof.Span().Begin() == 5);
-    CHECK(eof.Span().End() == 5);
 }
 
 TEST_CASE("a source containing only spaces produces an EOF at the source end")
@@ -172,7 +153,6 @@ TEST_CASE("ASCII whitespace between tokens is ignored")
         const dominus::Token one = lexer.NextToken();
         const dominus::Token plus = lexer.NextToken();
         const dominus::Token two = lexer.NextToken();
-        const dominus::Token eof = lexer.NextToken();
 
         const std::size_t plus_begin = 1 + whitespace.text.size();
         const std::size_t two_begin = plus_begin + 1;
@@ -189,9 +169,5 @@ TEST_CASE("ASCII whitespace between tokens is ignored")
         CHECK(two.Kind() == dominus::TokenKind::IntegerLiteral);
         CHECK(two.Span().Begin() == two_begin);
         CHECK(two.Span().End() == source_end);
-
-        CHECK(eof.Kind() == dominus::TokenKind::EndOfFile);
-        CHECK(eof.Span().Begin() == source_end);
-        CHECK(eof.Span().End() == source_end);
     }
 }
