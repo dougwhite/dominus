@@ -51,7 +51,10 @@ std::string_view SourceManager::Text(SourceSpan source_span) const
         throw std::out_of_range("SourceSpan end exceeds source text size");
     }
 
-    return source_text.substr(source_span.Begin(), source_span.End() - source_span.Begin());
+    return source_text.substr(
+        source_span.Begin(),
+        source_span.End() - source_span.Begin()
+    );
 }
 
 SourceLocation SourceManager::Locate(SourceId source_id, std::size_t byte_offset) const
