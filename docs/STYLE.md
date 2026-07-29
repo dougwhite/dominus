@@ -10,12 +10,42 @@ The goal is readable, consistent code without unnecessary ceremony. Prefer direc
 
 - Four spaces; never tabs.
 - Allman braces.
-- Maximum line length: 120 columns.
 - Pointer and reference symbols are written beside the variable name:
 
 ```cpp
 Source *source;
 const Source &source;
+```
+
+- There is no mechanically enforced maximum line length. Wrap long or conceptually complex expressions manually where doing so improves readability.
+- Short function calls may remain on one line.
+- When an ordinary function call, constructor call, declaration, or definition
+  is split across lines:
+  - place each argument or parameter on its own line;
+  - place the closing parenthesis on its own line.
+- When a multiline braced initializer is passed directly to a function, keep
+  the function call and type together, place each initializer on its own line,
+  and close the expression with `});`.
+
+```cpp
+const auto next_line = std::upper_bound(
+    source.line_starts.begin(),
+    source.line_starts.end(),
+    byte_offset
+);
+
+return SourceLocation(
+    source_id,
+    byte_offset,
+    line,
+    byte_column
+);
+
+_sources.push_back(Source{
+    .name = std::move(name),
+    .text = std::move(text),
+    .line_starts = std::move(line_starts)
+});
 ```
 
 - Includes are sorted automatically.
@@ -76,7 +106,6 @@ Example:
 
 ## C++ Usage
 
-- Do not use `auto`. Keep concrete types visible at declaration sites.
 - Prefer values and stable IDs over pointer-heavy object graphs.
 - Raw pointers and references are non-owning.
 - Use references when an object is required and pointers when absence is meaningful.
@@ -87,6 +116,36 @@ Example:
 - Do not use production `assert()` calls. Malformed input and failure states must be handled deliberately.
 - Use `const` where it communicates meaningful read-only intent or is required by an interface; do not add it mechanically.
 - Do not create getters, setters, wrapper types, or indirection solely to satisfy abstract OO conventions. Encapsulation should protect a real invariant.
+
+## `auto` usage
+
+- Prefer explicit types when the type communicates domain meaning, ownership,
+  units, or numeric representation.
+- Use `auto` when the initializer makes the type clear and spelling the exact
+  type would add noise or expose an implementation detail. Iterators and lambda
+  types are common examples.
+- Do not use `auto` merely to shorten a meaningful domain type.
+- When using `auto`, write reference and const qualifiers deliberately.
+
+```cpp
+// Good: the exact iterator type is verbose and unimportant.
+const auto next_line = std::upper_bound(
+    source.line_starts.begin(),
+    source.line_starts.end(),
+    byte_offset
+);
+
+// Good: the numeric type and its meaning matter.
+const std::size_t line_index = static_cast<std::size_t>(
+    std::distance(source.line_starts.begin(), line_start_iterator)
+);
+
+// Good: SourceLocation is an important domain concept.
+const SourceLocation location = sources.Locate(source_id, byte_offset);
+
+// Good: the reference relationship and domain type are useful to see.
+const Source &source = _sources.at(source_id._index);
+```
 
 ## Comments
 

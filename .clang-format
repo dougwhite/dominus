@@ -4,7 +4,7 @@ IndentWidth: 4
 TabWidth: 4
 UseTab: Never
 
-ColumnLimit: 120
+ColumnLimit: 0
 
 BreakBeforeBraces: Allman
 AllowShortFunctionsOnASingleLine: InlineOnly
@@ -19,3 +19,13 @@ SortIncludes:
   IgnoreExtension: false
 
 IncludeBlocks: Preserve
+
+AlignAfterOpenBracket: false
+BinPackArguments: false
+BinPackParameters: false
+
+BreakAfterOpenBracketFunction: false
+BreakBeforeCloseBracketFunction: true
+
+BreakAfterOpenBracketBracedList: true
+BreakBeforeCloseBracketBracedList: true
