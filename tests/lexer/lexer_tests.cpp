@@ -314,10 +314,7 @@ TEST_CASE("an unexpected character produces an invalid token and diagnostic")
     const dominus::Diagnostic &diagnostic = diagnostics.At(0);
 
     CHECK(diagnostic.Code() == dominus::DiagnosticCode::UnexpectedCharacter);
-
-    CHECK(diagnostic.Span().Begin() == 0);
-    CHECK(diagnostic.Span().End() == 1);
-    CHECK(sources.Text(diagnostic.Span()) == "@");
+    CHECK(diagnostic.Span() == invalid.Span());
 
     const dominus::Token eof = lexer.NextToken();
 

@@ -70,6 +70,7 @@ TEST_CASE("a source manager locates a byte offset by line and byte column")
     const dominus::SourceLocation location = sources.Locate(source_id, 6);
 
     CHECK(sources.Name(location.Source()) == "example.dom");
+    CHECK(location.Source() == source_id);
     CHECK(location.ByteOffset() == 6);
     CHECK(location.Line() == 2);
     CHECK(location.ByteColumn() == 3);

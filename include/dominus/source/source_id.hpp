@@ -7,6 +7,9 @@ namespace dominus
 
 class SourceId
 {
+    public:
+        bool operator==(const SourceId &other) const = default;
+
     private:
         friend class SourceManager;
 

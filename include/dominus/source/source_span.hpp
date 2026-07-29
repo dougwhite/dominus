@@ -12,6 +12,8 @@ class SourceSpan
     public:
         SourceSpan(SourceId source_id, std::size_t begin, std::size_t end);
 
+        bool operator==(const SourceSpan &other) const = default;
+
         SourceId Source() const;
         std::size_t Begin() const;
         std::size_t End() const;
