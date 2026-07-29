@@ -13,7 +13,12 @@ bool IsAsciiDigit(char character)
 
 bool IsWhitespace(char character)
 {
-    return character == ' ' || character == '\t' || character == '\n' || character == '\r' || character == '\v' || character == '\f';
+    return character == ' '
+        || character == '\t'
+        || character == '\n'
+        || character == '\r'
+        || character == '\v'
+        || character == '\f';
 }
 
 } // namespace
