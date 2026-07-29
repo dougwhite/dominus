@@ -9,7 +9,12 @@ enum class TokenKind
 {
     EndOfFile,
     IntegerLiteral,
-    Plus
+    Plus,
+    Minus,
+    Star,
+    Slash,
+    LeftParenthesis,
+    RightParenthesis
 };
 
 class Token

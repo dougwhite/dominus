@@ -62,7 +62,7 @@ TEST_CASE("an integer literal consumes all consecutive digits")
     CHECK(sources.Text(token.Span()) == "123");
 }
 
-TEST_CASE("a plus sign produces a plus token")
+TEST_CASE("a plus sign produces a Plus token")
 {
     dominus::SourceManager sources;
 
@@ -75,6 +75,81 @@ TEST_CASE("a plus sign produces a plus token")
     CHECK(plus.Span().Begin() == 0);
     CHECK(plus.Span().End() == 1);
     CHECK(sources.Text(plus.Span()) == "+");
+}
+
+TEST_CASE("a minus sign produces a Minus token")
+{
+    dominus::SourceManager sources;
+
+    const dominus::SourceId source_id = sources.AddSource("expression.dom", "-");
+    dominus::Lexer lexer{sources, source_id};
+
+    const dominus::Token minus = lexer.NextToken();
+
+    CHECK(minus.Kind() == dominus::TokenKind::Minus);
+    CHECK(minus.Span().Begin() == 0);
+    CHECK(minus.Span().End() == 1);
+    CHECK(sources.Text(minus.Span()) == "-");
+}
+
+TEST_CASE("an asterisk produces a Star token")
+{
+    dominus::SourceManager sources;
+
+    const dominus::SourceId source_id = sources.AddSource("expression.dom", "*");
+    dominus::Lexer lexer{sources, source_id};
+
+    const dominus::Token star = lexer.NextToken();
+
+    CHECK(star.Kind() == dominus::TokenKind::Star);
+    CHECK(star.Span().Begin() == 0);
+    CHECK(star.Span().End() == 1);
+    CHECK(sources.Text(star.Span()) == "*");
+}
+
+TEST_CASE("a slash produces a Slash token")
+{
+    dominus::SourceManager sources;
+
+    const dominus::SourceId source_id = sources.AddSource("expression.dom", "/");
+    dominus::Lexer lexer{sources, source_id};
+
+    const dominus::Token slash = lexer.NextToken();
+
+    CHECK(slash.Kind() == dominus::TokenKind::Slash);
+    CHECK(slash.Span().Begin() == 0);
+    CHECK(slash.Span().End() == 1);
+    CHECK(sources.Text(slash.Span()) == "/");
+}
+
+TEST_CASE("a left parenthesis produces a LeftParenthesis token")
+{
+    dominus::SourceManager sources;
+
+    const dominus::SourceId source_id = sources.AddSource("expression.dom", "(");
+    dominus::Lexer lexer{sources, source_id};
+
+    const dominus::Token paren = lexer.NextToken();
+
+    CHECK(paren.Kind() == dominus::TokenKind::LeftParenthesis);
+    CHECK(paren.Span().Begin() == 0);
+    CHECK(paren.Span().End() == 1);
+    CHECK(sources.Text(paren.Span()) == "(");
+}
+
+TEST_CASE("a right parenthesis produces a RightParenthesis token")
+{
+    dominus::SourceManager sources;
+
+    const dominus::SourceId source_id = sources.AddSource("expression.dom", ")");
+    dominus::Lexer lexer{sources, source_id};
+
+    const dominus::Token paren = lexer.NextToken();
+
+    CHECK(paren.Kind() == dominus::TokenKind::RightParenthesis);
+    CHECK(paren.Span().Begin() == 0);
+    CHECK(paren.Span().End() == 1);
+    CHECK(sources.Text(paren.Span()) == ")");
 }
 
 TEST_CASE("spaces between tokens are ignored")

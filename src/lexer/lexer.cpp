@@ -73,19 +73,40 @@ Token Lexer::NextToken()
         };
     }
 
-    // Scan for a plus sign
-    if (Current() == '+')
-    {
-        const std::size_t begin = _offset;
-        ++_offset;
+    // Scan for valid single character tokens
+    TokenKind token_kind;
 
-        return Token{
-            TokenKind::Plus,
-            SourceSpan{_source_id, begin, _offset}
-        };
+    switch (Current())
+    {
+        case '+':
+            token_kind = TokenKind::Plus;
+            break;
+        case '-':
+            token_kind = TokenKind::Minus;
+            break;
+        case '*':
+            token_kind = TokenKind::Star;
+            break;
+        case '/':
+            token_kind = TokenKind::Slash;
+            break;
+        case '(':
+            token_kind = TokenKind::LeftParenthesis;
+            break;
+        case ')':
+            token_kind = TokenKind::RightParenthesis;
+            break;
+        default:
+            throw std::logic_error("Lexeme not yet implemented");
     }
 
-    throw std::logic_error("Lexeme not yet implemented");
+    const std::size_t begin = _offset;
+    ++_offset;
+
+    return Token{
+        token_kind,
+        SourceSpan{_source_id, begin, _offset}
+    };
 }
 
 } // namespace dominus
