@@ -1,5 +1,6 @@
 #include <doctest/doctest.h>
 
+#include <dominus/source/source_location.hpp>
 #include <dominus/source/source_manager.hpp>
 #include <dominus/source/source_span.hpp>
 
@@ -57,4 +58,27 @@ TEST_CASE("source spans use UTF-8 byte offsets")
     const dominus::SourceSpan span{source_id, 1, 3};
 
     CHECK(sources.Text(span) == "é");
+}
+
+TEST_CASE("a source manager locates a byte offset by line and byte column")
+{
+    dominus::SourceManager sources;
+
+    const dominus::SourceId source_id = sources.AddSource("example.dom", "one\ntwo\nthree");
+
+    const dominus::SourceLocation location = sources.Locate(source_id, 6);
+
+    CHECK(sources.Name(location.Source()) == "example.dom");
+    CHECK(location.ByteOffset() == 6);
+    CHECK(location.Line() == 2);
+    CHECK(location.ByteColumn() == 3);
+}
+
+TEST_CASE("a source manager rejects location requests exceeding the source size")
+{
+    dominus::SourceManager sources;
+
+    const dominus::SourceId source_id = sources.AddSource("example.dom", "one\ntwo\nthree");
+
+    CHECK_THROWS_AS(sources.Locate(source_id, 1000), std::out_of_range);
 }
