@@ -18,6 +18,8 @@ include(DominusSanitizers)
 
 add_library(dominus_core STATIC
     src/dominus_core.cpp
+    src/lexer/lexer.cpp
+    src/lexer/token.cpp
     src/source/source_location.cpp
     src/source/source_manager.cpp
     src/source/source_span.cpp
@@ -74,6 +76,7 @@ if(BUILD_TESTING)
         tests/test_harness.cpp
         tests/source/source_manager_tests.cpp
         tests/source/source_span_tests.cpp
+        tests/lexer/lexer_tests.cpp
     )
 
     target_link_libraries(dominus_tests
