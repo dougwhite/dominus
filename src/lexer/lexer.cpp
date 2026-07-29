@@ -11,6 +11,11 @@ bool IsAsciiDigit(char character)
     return character >= '0' && character <= '9';
 }
 
+bool IsWhitespace(char character)
+{
+    return character == ' ' || character == '\t' || character == '\n' || character == '\r' || character == '\v' || character == '\f';
+}
+
 } // namespace
 
 namespace dominus
@@ -32,6 +37,12 @@ char Lexer::Current() const
 
 Token Lexer::NextToken()
 {
+    // Skip any whitespace
+    while (!AtEnd() && IsWhitespace(Current()))
+    {
+        ++_offset;
+    }
+
     // When we reach the end of our source text we are finished
     if (AtEnd())
     {
