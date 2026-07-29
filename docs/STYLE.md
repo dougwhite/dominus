@@ -64,6 +64,8 @@ Group includes in this order, separated by blank lines:
 4. Standard-library headers.
 5. Platform-specific headers.
 
+> Exception for tests: In test implementation files, place the test-framework header first, followed by Dominus headers and then standard-library headers.
+
 ## C++ Practices
 
 - Prefer direct, explicit code over clever code.
@@ -89,6 +91,8 @@ Use `auto` when the exact type is unimportant or excessively verbose. Prefer an 
 Comments should explain intent, invariants, non-obvious decisions, or important steps.
 
 Do not mechanically comment code that is already self-explanatory. Keep comments accurate as the implementation changes.
+
+> Readability trumps everything!: Readability comments are encouraged when they divide a multi-step operation into meaningful conceptual stages or make the code easier to scan quickly. A comment may describe an otherwise straightforward step when it improves the visual structure and high-level readability of the function.
 
 ## Tests
 
