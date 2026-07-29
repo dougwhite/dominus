@@ -12,18 +12,18 @@ namespace dominus
 
 class Lexer
 {
-  public:
-    Lexer(const SourceManager &sources, SourceId source_id);
+    public:
+        Lexer(const SourceManager &sources, SourceId source_id);
 
-    Token NextToken();
+        Token NextToken();
 
-  private:
-    SourceId _source_id;
-    std::string_view _source_text;
-    std::size_t _offset = 0;
+    private:
+        SourceId _source_id;
+        std::string_view _source_text;
+        std::size_t _offset = 0;
 
-    bool AtEnd() const;
-    char Current() const;
+        bool AtEnd() const;
+        char Current() const;
 };
 
 } // namespace dominus

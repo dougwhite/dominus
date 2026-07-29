@@ -17,7 +17,6 @@ include(DominusWarnings)
 include(DominusSanitizers)
 
 add_library(dominus_core STATIC
-    src/dominus_core.cpp
     src/lexer/lexer.cpp
     src/lexer/token.cpp
     src/source/source_location.cpp
@@ -73,7 +72,6 @@ if(BUILD_TESTING)
     include("${DOCTEST_CMAKE_HELPER}")
 
     add_executable(dominus_tests
-        tests/test_harness.cpp
         tests/source/source_manager_tests.cpp
         tests/source/source_span_tests.cpp
         tests/lexer/lexer_tests.cpp

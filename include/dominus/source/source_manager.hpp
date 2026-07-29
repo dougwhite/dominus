@@ -15,24 +15,24 @@ namespace dominus
 
 class SourceManager
 {
-  public:
-    SourceId AddSource(std::string name, std::string text);
+    public:
+        SourceId AddSource(std::string name, std::string text);
 
-    std::string_view Name(SourceId source_id) const;
-    std::string_view Text(SourceId source_id) const;
-    std::string_view Text(SourceSpan source_span) const;
+        std::string_view Name(SourceId source_id) const;
+        std::string_view Text(SourceId source_id) const;
+        std::string_view Text(SourceSpan source_span) const;
 
-    SourceLocation Locate(SourceId source_id, std::size_t byte_offset) const;
+        SourceLocation Locate(SourceId source_id, std::size_t byte_offset) const;
 
-  private:
-    struct Source
-    {
-        std::string name;
-        std::string text;
-        std::vector<std::size_t> line_starts;
-    };
+    private:
+        struct Source
+        {
+            std::string name;
+            std::string text;
+            std::vector<std::size_t> line_starts;
+        };
 
-    std::deque<Source> _sources;
+        std::deque<Source> _sources;
 };
 
 } // namespace dominus

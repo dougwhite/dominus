@@ -14,17 +14,17 @@ enum class TokenKind
 
 class Token
 {
-  public:
-    TokenKind Kind() const;
-    SourceSpan Span() const;
+    public:
+        TokenKind Kind() const;
+        SourceSpan Span() const;
 
-  private:
-    friend class Lexer;
+    private:
+        friend class Lexer;
 
-    Token(TokenKind kind, SourceSpan span);
+        Token(TokenKind kind, SourceSpan span);
 
-    TokenKind _kind;
-    SourceSpan _span;
+        TokenKind _kind;
+        SourceSpan _span;
 };
 
 } // namespace dominus
