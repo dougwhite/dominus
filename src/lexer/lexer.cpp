@@ -40,6 +40,17 @@ char Lexer::Current() const
     return _source_text[_offset];
 }
 
+Token Lexer::ConsumeSingle(TokenKind token_kind)
+{
+    const std::size_t begin = _offset;
+    ++_offset;
+
+    return Token{
+        token_kind,
+        SourceSpan{_source_id, begin, _offset}
+    };
+}
+
 Token Lexer::NextToken()
 {
     // Skip any whitespace
@@ -74,39 +85,29 @@ Token Lexer::NextToken()
     }
 
     // Scan for valid single character tokens
-    TokenKind token_kind;
-
     switch (Current())
     {
         case '+':
-            token_kind = TokenKind::Plus;
-            break;
+            return ConsumeSingle(TokenKind::Plus);
+
         case '-':
-            token_kind = TokenKind::Minus;
-            break;
+            return ConsumeSingle(TokenKind::Minus);
+
         case '*':
-            token_kind = TokenKind::Star;
-            break;
+            return ConsumeSingle(TokenKind::Star);
+
         case '/':
-            token_kind = TokenKind::Slash;
-            break;
+            return ConsumeSingle(TokenKind::Slash);
+
         case '(':
-            token_kind = TokenKind::LeftParenthesis;
-            break;
+            return ConsumeSingle(TokenKind::LeftParenthesis);
+
         case ')':
-            token_kind = TokenKind::RightParenthesis;
-            break;
+            return ConsumeSingle(TokenKind::RightParenthesis);
+
         default:
             throw std::logic_error("Lexeme not yet implemented");
     }
-
-    const std::size_t begin = _offset;
-    ++_offset;
-
-    return Token{
-        token_kind,
-        SourceSpan{_source_id, begin, _offset}
-    };
 }
 
 } // namespace dominus

@@ -24,6 +24,7 @@ class Lexer
 
         bool AtEnd() const;
         char Current() const;
+        Token ConsumeSingle(TokenKind token_kind);
 };
 
 } // namespace dominus

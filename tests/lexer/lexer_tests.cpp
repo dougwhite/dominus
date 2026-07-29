@@ -246,3 +246,31 @@ TEST_CASE("ASCII whitespace between tokens is ignored")
         CHECK(two.Span().End() == source_end);
     }
 }
+
+TEST_CASE("an arithmetic expression produces the expected token sequence")
+{
+    dominus::SourceManager sources;
+
+    const dominus::SourceId source_id =
+        sources.AddSource("expression.dom", "1 + 2 * 3");
+
+    dominus::Lexer lexer{sources, source_id};
+
+    const dominus::Token one = lexer.NextToken();
+    const dominus::Token plus = lexer.NextToken();
+    const dominus::Token two = lexer.NextToken();
+    const dominus::Token star = lexer.NextToken();
+    const dominus::Token three = lexer.NextToken();
+    const dominus::Token eof = lexer.NextToken();
+
+    CHECK(one.Kind() == dominus::TokenKind::IntegerLiteral);
+    CHECK(plus.Kind() == dominus::TokenKind::Plus);
+    CHECK(two.Kind() == dominus::TokenKind::IntegerLiteral);
+    CHECK(star.Kind() == dominus::TokenKind::Star);
+    CHECK(three.Kind() == dominus::TokenKind::IntegerLiteral);
+    CHECK(eof.Kind() == dominus::TokenKind::EndOfFile);
+
+    CHECK(sources.Text(one.Span()) == "1");
+    CHECK(sources.Text(two.Span()) == "2");
+    CHECK(sources.Text(three.Span()) == "3");
+}
