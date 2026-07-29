@@ -7,6 +7,7 @@ namespace dominus
 
 enum class TokenKind
 {
+    Invalid,
     EndOfFile,
     IntegerLiteral,
     Plus,

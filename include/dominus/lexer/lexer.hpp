@@ -1,5 +1,6 @@
 #pragma once
 
+#include <dominus/diagnostics/diagnostic_bag.hpp>
 #include <dominus/lexer/token.hpp>
 #include <dominus/source/source_id.hpp>
 #include <dominus/source/source_manager.hpp>
@@ -13,13 +14,15 @@ namespace dominus
 class Lexer
 {
     public:
-        Lexer(const SourceManager &sources, SourceId source_id);
+        Lexer(const SourceManager &sources, SourceId source_id, DiagnosticBag &diagnostics);
 
         Token NextToken();
 
     private:
         SourceId _source_id;
         std::string_view _source_text;
+        DiagnosticBag &_diagnostics;
+
         std::size_t _offset = 0;
 
         bool AtEnd() const;

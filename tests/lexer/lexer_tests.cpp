@@ -1,5 +1,7 @@
 #include <doctest/doctest.h>
 
+#include <dominus/diagnostics/diagnostic.hpp>
+#include <dominus/diagnostics/diagnostic_bag.hpp>
 #include <dominus/lexer/lexer.hpp>
 #include <dominus/lexer/token.hpp>
 #include <dominus/source/source_manager.hpp>
@@ -11,9 +13,10 @@
 TEST_CASE("an empty source produces an end-of-file token")
 {
     dominus::SourceManager sources;
+    dominus::DiagnosticBag diagnostics;
 
     const dominus::SourceId source_id = sources.AddSource("empty.dom", "");
-    dominus::Lexer lexer{sources, source_id};
+    dominus::Lexer lexer{sources, source_id, diagnostics};
 
     const dominus::Token token = lexer.NextToken();
 
@@ -26,9 +29,10 @@ TEST_CASE("an empty source produces an end-of-file token")
 TEST_CASE("a single digit produces an integer-literal token and an eof")
 {
     dominus::SourceManager sources;
+    dominus::DiagnosticBag diagnostics;
 
     const dominus::SourceId source_id = sources.AddSource("expression.dom", "1");
-    dominus::Lexer lexer{sources, source_id};
+    dominus::Lexer lexer{sources, source_id, diagnostics};
 
     // Get the "1" token
     const dominus::Token token = lexer.NextToken();
@@ -49,9 +53,10 @@ TEST_CASE("a single digit produces an integer-literal token and an eof")
 TEST_CASE("an integer literal consumes all consecutive digits")
 {
     dominus::SourceManager sources;
+    dominus::DiagnosticBag diagnostics;
 
     const dominus::SourceId source_id = sources.AddSource("expression.dom", "123");
-    dominus::Lexer lexer{sources, source_id};
+    dominus::Lexer lexer{sources, source_id, diagnostics};
 
     // Get the "123" token
     const dominus::Token token = lexer.NextToken();
@@ -65,9 +70,10 @@ TEST_CASE("an integer literal consumes all consecutive digits")
 TEST_CASE("a plus sign produces a Plus token")
 {
     dominus::SourceManager sources;
+    dominus::DiagnosticBag diagnostics;
 
     const dominus::SourceId source_id = sources.AddSource("expression.dom", "+");
-    dominus::Lexer lexer{sources, source_id};
+    dominus::Lexer lexer{sources, source_id, diagnostics};
 
     const dominus::Token plus = lexer.NextToken();
 
@@ -80,9 +86,10 @@ TEST_CASE("a plus sign produces a Plus token")
 TEST_CASE("a minus sign produces a Minus token")
 {
     dominus::SourceManager sources;
+    dominus::DiagnosticBag diagnostics;
 
     const dominus::SourceId source_id = sources.AddSource("expression.dom", "-");
-    dominus::Lexer lexer{sources, source_id};
+    dominus::Lexer lexer{sources, source_id, diagnostics};
 
     const dominus::Token minus = lexer.NextToken();
 
@@ -95,9 +102,10 @@ TEST_CASE("a minus sign produces a Minus token")
 TEST_CASE("an asterisk produces a Star token")
 {
     dominus::SourceManager sources;
+    dominus::DiagnosticBag diagnostics;
 
     const dominus::SourceId source_id = sources.AddSource("expression.dom", "*");
-    dominus::Lexer lexer{sources, source_id};
+    dominus::Lexer lexer{sources, source_id, diagnostics};
 
     const dominus::Token star = lexer.NextToken();
 
@@ -110,9 +118,10 @@ TEST_CASE("an asterisk produces a Star token")
 TEST_CASE("a slash produces a Slash token")
 {
     dominus::SourceManager sources;
+    dominus::DiagnosticBag diagnostics;
 
     const dominus::SourceId source_id = sources.AddSource("expression.dom", "/");
-    dominus::Lexer lexer{sources, source_id};
+    dominus::Lexer lexer{sources, source_id, diagnostics};
 
     const dominus::Token slash = lexer.NextToken();
 
@@ -125,9 +134,10 @@ TEST_CASE("a slash produces a Slash token")
 TEST_CASE("a left parenthesis produces a LeftParenthesis token")
 {
     dominus::SourceManager sources;
+    dominus::DiagnosticBag diagnostics;
 
     const dominus::SourceId source_id = sources.AddSource("expression.dom", "(");
-    dominus::Lexer lexer{sources, source_id};
+    dominus::Lexer lexer{sources, source_id, diagnostics};
 
     const dominus::Token paren = lexer.NextToken();
 
@@ -140,9 +150,10 @@ TEST_CASE("a left parenthesis produces a LeftParenthesis token")
 TEST_CASE("a right parenthesis produces a RightParenthesis token")
 {
     dominus::SourceManager sources;
+    dominus::DiagnosticBag diagnostics;
 
     const dominus::SourceId source_id = sources.AddSource("expression.dom", ")");
-    dominus::Lexer lexer{sources, source_id};
+    dominus::Lexer lexer{sources, source_id, diagnostics};
 
     const dominus::Token paren = lexer.NextToken();
 
@@ -155,9 +166,10 @@ TEST_CASE("a right parenthesis produces a RightParenthesis token")
 TEST_CASE("spaces between tokens are ignored")
 {
     dominus::SourceManager sources;
+    dominus::DiagnosticBag diagnostics;
 
     const dominus::SourceId source_id = sources.AddSource("expression.dom", "1 + 2");
-    dominus::Lexer lexer{sources, source_id};
+    dominus::Lexer lexer{sources, source_id, diagnostics};
 
     const dominus::Token one = lexer.NextToken();
 
@@ -183,9 +195,10 @@ TEST_CASE("spaces between tokens are ignored")
 TEST_CASE("a source containing only spaces produces an EOF at the source end")
 {
     dominus::SourceManager sources;
+    dominus::DiagnosticBag diagnostics;
 
     const dominus::SourceId source_id = sources.AddSource("expression.dom", "   ");
-    dominus::Lexer lexer{sources, source_id};
+    dominus::Lexer lexer{sources, source_id, diagnostics};
 
     const dominus::Token eof = lexer.NextToken();
 
@@ -217,13 +230,14 @@ TEST_CASE("ASCII whitespace between tokens is ignored")
         CAPTURE(whitespace.name);
 
         dominus::SourceManager sources;
+        dominus::DiagnosticBag diagnostics;
 
         std::string source_text = "1";
         source_text += whitespace.text;
         source_text += "+2";
 
         const dominus::SourceId source_id = sources.AddSource("expression.dom", source_text);
-        dominus::Lexer lexer{sources, source_id};
+        dominus::Lexer lexer{sources, source_id, diagnostics};
 
         const dominus::Token one = lexer.NextToken();
         const dominus::Token plus = lexer.NextToken();
@@ -250,11 +264,12 @@ TEST_CASE("ASCII whitespace between tokens is ignored")
 TEST_CASE("an arithmetic expression produces the expected token sequence")
 {
     dominus::SourceManager sources;
+    dominus::DiagnosticBag diagnostics;
 
     const dominus::SourceId source_id =
         sources.AddSource("expression.dom", "1 + 2 * 3");
 
-    dominus::Lexer lexer{sources, source_id};
+    dominus::Lexer lexer{sources, source_id, diagnostics};
 
     const dominus::Token one = lexer.NextToken();
     const dominus::Token plus = lexer.NextToken();
@@ -273,4 +288,44 @@ TEST_CASE("an arithmetic expression produces the expected token sequence")
     CHECK(sources.Text(one.Span()) == "1");
     CHECK(sources.Text(two.Span()) == "2");
     CHECK(sources.Text(three.Span()) == "3");
+
+    CHECK(diagnostics.Empty());
+}
+
+TEST_CASE("an unexpected character produces an invalid token and diagnostic")
+{
+    dominus::SourceManager sources;
+    dominus::DiagnosticBag diagnostics;
+
+    const dominus::SourceId source_id =
+        sources.AddSource("expression.dom", "@");
+
+    dominus::Lexer lexer{sources, source_id, diagnostics};
+
+    const dominus::Token invalid = lexer.NextToken();
+
+    CHECK(invalid.Kind() == dominus::TokenKind::Invalid);
+    CHECK(invalid.Span().Begin() == 0);
+    CHECK(invalid.Span().End() == 1);
+    CHECK(sources.Text(invalid.Span()) == "@");
+
+    CHECK_FALSE(diagnostics.Empty());
+    REQUIRE(diagnostics.Size() == 1);
+
+    const dominus::Diagnostic &diagnostic = diagnostics.At(0);
+
+    CHECK(
+        diagnostic.Code()
+        == dominus::DiagnosticCode::UnexpectedCharacter
+    );
+
+    CHECK(diagnostic.Span().Begin() == 0);
+    CHECK(diagnostic.Span().End() == 1);
+    CHECK(sources.Text(diagnostic.Span()) == "@");
+
+    const dominus::Token eof = lexer.NextToken();
+
+    CHECK(eof.Kind() == dominus::TokenKind::EndOfFile);
+    CHECK(eof.Span().Begin() == 1);
+    CHECK(eof.Span().End() == 1);
 }

@@ -26,7 +26,8 @@ bool IsWhitespace(char character)
 namespace dominus
 {
 
-Lexer::Lexer(const SourceManager &sources, SourceId source_id) : _source_id(source_id), _source_text(sources.Text(source_id))
+Lexer::Lexer(const SourceManager &sources, SourceId source_id, DiagnosticBag &diagnostics)
+    : _source_id(source_id), _source_text(sources.Text(source_id)), _diagnostics(diagnostics)
 {
 }
 
@@ -106,8 +107,19 @@ Token Lexer::NextToken()
             return ConsumeSingle(TokenKind::RightParenthesis);
 
         default:
-            throw std::logic_error("Lexeme not yet implemented");
+        {
+            // Consume and report an unexpected character
+            const Token invalid = ConsumeSingle(TokenKind::Invalid);
+
+            _diagnostics.Report(
+                DiagnosticCode::UnexpectedCharacter,
+                invalid.Span()
+            );
+
+            return invalid;
+        }
     }
+
 }
 
 } // namespace dominus

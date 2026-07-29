@@ -17,6 +17,8 @@ include(DominusWarnings)
 include(DominusSanitizers)
 
 add_library(dominus_core STATIC
+    src/diagnostics/diagnostic_bag.cpp
+    src/diagnostics/diagnostic.cpp
     src/lexer/lexer.cpp
     src/lexer/token.cpp
     src/source/source_location.cpp
