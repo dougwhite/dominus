@@ -21,9 +21,13 @@ add_library(dominus_core STATIC
     src/diagnostics/diagnostic.cpp
     src/lexer/lexer.cpp
     src/lexer/token.cpp
+    src/parser/parser.cpp
     src/source/source_location.cpp
     src/source/source_manager.cpp
     src/source/source_span.cpp
+    src/syntax/expression.cpp
+    src/syntax/integer_literal_expression.cpp
+    src/syntax/syntax_tree.cpp
 )
 
 target_include_directories(dominus_core
@@ -77,6 +81,12 @@ if(BUILD_TESTING)
         tests/source/source_manager_tests.cpp
         tests/source/source_span_tests.cpp
         tests/lexer/lexer_tests.cpp
+        tests/parser/parser_tests.cpp
+    )
+
+    target_include_directories(dominus_tests
+        PRIVATE
+            "${CMAKE_CURRENT_SOURCE_DIR}/tests"
     )
 
     target_link_libraries(dominus_tests
