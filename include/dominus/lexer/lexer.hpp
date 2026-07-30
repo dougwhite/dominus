@@ -17,7 +17,7 @@ class Lexer : public TokenSource
     public:
         Lexer(const SourceManager &sources, SourceId source_id, DiagnosticBag &diagnostics);
 
-        Token NextToken();
+        Token NextToken() override;
 
     private:
         SourceId _source_id;
