@@ -4,11 +4,29 @@
 #include <dominus/diagnostics/diagnostic_bag.hpp>
 #include <dominus/lexer/lexer.hpp>
 #include <dominus/lexer/token.hpp>
+#include <dominus/lexer/token_source.hpp>
 #include <dominus/source/source_manager.hpp>
 
 #include <cstddef>
 #include <string>
 #include <string_view>
+
+TEST_CASE("a lexer can be consumed as a token source")
+{
+    dominus::SourceManager sources;
+    dominus::DiagnosticBag diagnostics;
+
+    const dominus::SourceId source_id =
+        sources.AddSource("expression.dom", "123");
+
+    dominus::Lexer lexer{sources, source_id, diagnostics};
+    dominus::TokenSource &tokens = lexer;
+
+    const dominus::Token token = tokens.NextToken();
+
+    CHECK(token.Kind() == dominus::TokenKind::IntegerLiteral);
+    CHECK(token.Span() == dominus::SourceSpan{source_id, 0, 3});
+}
 
 TEST_CASE("an empty source produces an end-of-file token")
 {

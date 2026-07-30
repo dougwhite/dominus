@@ -2,6 +2,7 @@
 
 #include <dominus/diagnostics/diagnostic_bag.hpp>
 #include <dominus/lexer/token.hpp>
+#include <dominus/lexer/token_source.hpp>
 #include <dominus/source/source_id.hpp>
 #include <dominus/source/source_manager.hpp>
 
@@ -11,7 +12,7 @@
 namespace dominus
 {
 
-class Lexer
+class Lexer : public TokenSource
 {
     public:
         Lexer(const SourceManager &sources, SourceId source_id, DiagnosticBag &diagnostics);

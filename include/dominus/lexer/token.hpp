@@ -21,14 +21,12 @@ enum class TokenKind
 class Token
 {
     public:
+        Token(TokenKind kind, SourceSpan span);
+
         TokenKind Kind() const;
         SourceSpan Span() const;
 
     private:
-        friend class Lexer;
-
-        Token(TokenKind kind, SourceSpan span);
-
         TokenKind _kind;
         SourceSpan _span;
 };
